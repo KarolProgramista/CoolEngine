@@ -68,5 +68,9 @@ class Sprite(GameObject):
         if self.imagePath is not None:
             transformed = pygame.transform.scale(self._image, (self.width, self.height))
             window.blit(transformed, (self.x, self.y))
+        elif self.color is not None:
+            pygame.draw.rect(window, self.color, self._rect)
+        else:
+            raise ValueError(f"No color and image in {self.name}")
 
 

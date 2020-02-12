@@ -28,12 +28,14 @@ class Window(object):
         else:
             raise Exception("Title must be string")
 
+    # Set color background for game
     def set_background(self, color):
         if type(color) is tuple:
             self.__bg = color
         else:
             raise ValueError("Color must be tuple")
 
+    # Get color of background
     def get_background(self):
         return self.__bg
 

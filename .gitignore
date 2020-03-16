@@ -1,3 +1,5 @@
 CoolEngineWorkspace.code-workspace
 .vscode
 __pycache__
+tests.py
+tast2.py

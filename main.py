@@ -25,8 +25,9 @@ class Wall(CoolEngine.Rectangle):
 
 class Man(CoolEngine.Cricle):
     def Setup(self):
+        self.collidable = True
         self.dir = 1
-        self.diry = -1
+        self.diry = 0
         self.changed = 0
 
     def Update(self):

@@ -24,6 +24,8 @@ class GameObject(object):
         self._children = []
         self._window = None
         self._stop = [0, 0]
+        self._child_ycoll = False
+        self._child_xcoll = False
 
         # Setup
         self.Setup()
@@ -66,81 +68,58 @@ class GameObject(object):
 
     # This function change position for object
     def Translate(self, x: int, y: int):
+        if self.collidable or (self._parent and self._parent.collidable):
+            new_x = self.x + x
+            new_y = self.y + y
 
-        for obj in self._window._all_game_objects:
-            if obj.collidable is True:
-                rc = self.CheckCollison(obj)
-                if rc:
-                    if x > 0:
-                        x = 0
-                        if self._parent:
-                            self._parent._stop[0] = 1
-                        else:
-                            x = -1
-                    elif x < 0:
-                        x = 0
-                        if self._parent:
-                            self._parent._stop[0] = -1
-                        else:
-                            x = 1
-                    else:
-                        if self._parent:
-                            self._parent._stop[0] = 0
-                    if y > 0:
-                        y = 0
-                        if self._parent:
-                            self._parent._stop[1] = 1
-                        else:
-                            y = -2
-                    elif y < 0:
-                        y = 0
-                        if self._parent:
-                            self._parent._stop[1] = -1
-                        else:
-                            y = 2
-                    else:
-                        if self._parent:
-                            self._parent._stop[1] = 0
-                    break
-                else:
-                    if self._parent:
-                        self._parent._stop[0] = 0
-                        self._parent._stop[1] = 0
+            # For x
+            self._rect = pygame.Rect(new_x, self.y, self.width, self.height)
 
-        if x > 0:
-            if not self._stop[0] == 1:
-                self.x += x
-            else:
-                x = -1
-                self.x += x
-        elif x < 0:
-            if not self._stop[0] == -1:
-                self.x += x
-            else:
-                x = 1
-                self.x += x
-        else:
-            self.x += x
+            for obj in self._window._all_game_objects:
+                if obj.collidable is True and not obj == self:
+                    rc = self.CheckCollison(obj)
+                    if rc:
+                        if self._parent:
+                            self._parent._child_xcoll = True
+                        new_x = self.x
 
-        if y > 0:
-            if not self._stop[1] == 1:
-                self.y += y
-            else:
-                y = -1
-                self.y += y
-        elif y < 0:
-            if not self._stop[1] == -1:
-                self.y += y
-            else:
-                y = 1
-                self.y += y
-        else:
-            self.y += y
-        self.y += y
+            if not new_x == self.x:
+                if self._children:
+                    for child in self._children:
+                        child.Translate(x, 0)
+                if self._parent:
+                    self._parent._child_xcoll = False
 
-        if self._children:
-            for child in self._children:
-                child.Translate(x, y)
+            # For y
+            self._rect = pygame.Rect(self.x, new_y, self.width, self.height)
+
+            for obj in self._window._all_game_objects:
+                if obj.collidable is True and not obj == self:
+                    rc = self.CheckCollison(obj)
+                    if rc:
+                        new_y = self.y
+
+                        if self._parent:
+                            self._parent._child_ycoll = True
+
+            if not new_y == self.y:
+                if self._children:
+                    for child in self._children:
+                        child.Translate(0, y)
+                if self._parent:
+                    self._parent._child_ycoll = False
+
+            if not self._child_xcoll:
+                self.x = new_x
+            if not self._child_ycoll:
+                self.y = new_y
+        # else:
+        #     self.x += x
+        #     self.y += y
+
+        #     if self._children:
+        #         for child in self._children:
+        #             child.Translate(x, y)
 
     # This function returns parent of GameObject
     def GetParent(self):

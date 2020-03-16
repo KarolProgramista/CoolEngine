@@ -26,6 +26,7 @@ class Wall(CoolEngine.Rectangle):
 class Man(CoolEngine.Cricle):
     def Setup(self):
         self.dir = 1
+        self.diry = -1
         self.changed = 0
 
     def Update(self):
@@ -43,7 +44,7 @@ class Man(CoolEngine.Cricle):
             self.dir = -1
         else:
             self.changed = 0
-        self.Translate(self.dir, 0)
+        self.Translate(self.dir, self.diry)
 
 class Girl(CoolEngine.Triangle):
     def Setup(self):
@@ -79,6 +80,8 @@ m = Man(40, 175, 20, 20, 20, "Orofar", (255, 0, 0))
 # m.draw_hitboxes = True
 b = Boy(60, 180, 10, 10, "Karol", (255, 0, 0))
 b2 = Wall(100, 180, 10, 10, "Karol2.0", (0, 0, 0))
+b3 = Wall(10, 180, 10, 10, "Karol2.0", (0, 0, 0))
+b4 = Wall(10, 50, 300, 10, "Karol2.0", (0, 0, 0))
 
 g = Girl(30, 90, 10, 10, "Trobums", (255, 0, 0), "up")
 g.draw_hitboxes = True
@@ -90,5 +93,7 @@ window.add_game_object(m)
 window.add_game_object(g)
 window.add_game_object(Woman(100, 90, 0, 0, "Chory", imagePath="bee.png", color=(255, 0, 0)))
 window.add_game_object(b2)
+window.add_game_object(b3)
+window.add_game_object(b4)
 
 window.run()

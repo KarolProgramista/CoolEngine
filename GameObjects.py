@@ -75,23 +75,67 @@ class GameObject(object):
                         x = 0
                         if self._parent:
                             self._parent._stop[0] = 1
+                        else:
+                            x = -1
                     elif x < 0:
-                        pass
+                        x = 0
+                        if self._parent:
+                            self._parent._stop[0] = -1
+                        else:
+                            x = 1
                     else:
                         if self._parent:
                             self._parent._stop[0] = 0
                     if y > 0:
                         y = 0
+                        if self._parent:
+                            self._parent._stop[1] = 1
+                        else:
+                            y = -2
+                    elif y < 0:
+                        y = 0
+                        if self._parent:
+                            self._parent._stop[1] = -1
+                        else:
+                            y = 2
+                    else:
+                        if self._parent:
+                            self._parent._stop[1] = 0
+                    break
                 else:
                     if self._parent:
                         self._parent._stop[0] = 0
                         self._parent._stop[1] = 0
+
         if x > 0:
             if not self._stop[0] == 1:
+                self.x += x
+            else:
+                x = -1
+                self.x += x
+        elif x < 0:
+            if not self._stop[0] == -1:
+                self.x += x
+            else:
+                x = 1
                 self.x += x
         else:
             self.x += x
 
+        if y > 0:
+            if not self._stop[1] == 1:
+                self.y += y
+            else:
+                y = -1
+                self.y += y
+        elif y < 0:
+            if not self._stop[1] == -1:
+                self.y += y
+            else:
+                y = 1
+                self.y += y
+        else:
+            self.y += y
         self.y += y
 
         if self._children:

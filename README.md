@@ -14,7 +14,7 @@ There are many classes to use.
  
 My engine is easy to learn.
 
-#How to install
+# How to install
 
 This engine can't be installed becouse
 setup tools work realy bad on Windows. 

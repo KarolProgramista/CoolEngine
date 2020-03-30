@@ -1,4 +1,0 @@
-class alo(lol)
-{
-    if
-}

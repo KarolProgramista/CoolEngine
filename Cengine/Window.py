@@ -1,6 +1,5 @@
 import pygame
 import Cengine.GameObjects as GameObjects
-import threading
 
 pygame.init()
 
@@ -23,6 +22,8 @@ class Window(object):
         self.__clock = pygame.time.Clock()
         self.__delta_time = self.__clock.tick(self.fps)
         self._events = []
+        self._keys = []
+        self._events_up = []
 
     # This function runs engine
     def run(self):
@@ -67,21 +68,30 @@ class Window(object):
 
     def __get_inputs(self):
         self._events.clear()
+        self._events_up.clear()
         for event in pygame.event.get():
             if(event.type == pygame.QUIT):
                 pygame.quit()
                 quit()
             elif event.type == pygame.KEYDOWN:
                 self._events.append(event.key)
+            elif event.type == pygame.KEYUP:
+                self._events_up.append(event.key)
 
     # Adding objects
-    def add_game_object(self, Object):
+    def add_game_object(self, Object: GameObjects.GameObject):
         if isinstance(Object, GameObjects.GameObject) is True:
             Object._window = self
             self._all_game_objects.append(Object)
         else:
             raise ValueError("Given arg isn't GameObject")
 
+    # Destroy object
+    def destroy(self, Object: GameObjects.GameObject):
+        if isinstance(Object, GameObjects.GameObject) is True:
+            self._all_game_objects.remove(Object)
+        else:
+            raise ValueError("Given arg isn't GameObject")
     # This function returns how mouch second pass per one frame
     def second_per_frame(self):
         return 1/self.fps

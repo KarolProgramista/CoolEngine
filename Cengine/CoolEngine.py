@@ -44,13 +44,24 @@ KEY_LEFT = pygame.K_LEFT
 KEY_RIGHT = pygame.K_RIGHT
 KEY_UP = pygame.K_UP
 KEY_DOWN = pygame.K_DOWN
+KEY_LCTRL = pygame.K_LCTRL
+KEY_RCTRL = pygame.K_RCTRL
+KEY_LSHIFT = pygame.K_LSHIFT
+KEY_RSHIFT = pygame.K_RSHIFT
+KEY_SLASH = pygame.K_SLASH
+KEY_BACKSLASH = pygame.K_BACKSLASH
 
 # This function takes window and key
 # If passed key has been clicked in this window function return True
 # If not return False
-def Input(window, key):
+def InputDown(window, key):
     for event in window._events:
         if event == key:
             return True
     return False
 
+def InputUp(window, key):
+    for event in window._events_up:
+        if event == key:
+            return True
+    return False

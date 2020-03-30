@@ -19,6 +19,7 @@ class GameObject(object):
         self.useGravity: bool = False  # Set it to true if you want to make your obj fall down
         self.draw_hitboxes: bool = False  # Set it to True if you want to display hitboxes of game object
         self.hitbox_color: tuple = (0, 0, 0)  # Set the color of hitbox
+        self.gravity = 2 # Set it to change gravity force
 
         # Private variables
         self._rect = pygame.Rect(x, y, width, height)
@@ -28,14 +29,14 @@ class GameObject(object):
         self._stop = [0, 0]
         self._child_ycoll = False
         self._child_xcoll = False
-        self._gravity = 2
+        self._collideing_with = []
 
         # Setup
         self.Setup()
 
     def _hiden_update(self):
         if self.useGravity:
-            self.Translate(0, self._gravity)
+            self.Translate(0, self.gravity)
         self._rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self._draw()
         self._draw_hitboxes()
@@ -82,8 +83,9 @@ class GameObject(object):
 
             for obj in self._window._all_game_objects:
                 if obj.collidable is True and not obj == self:
-                    rc = self.CheckCollison(obj)
+                    rc = self._CheckCollison(obj)
                     if rc:
+                        self._collideing_with.append(obj)
                         if self._parent:
                             self._parent._child_xcoll = True
                         new_x = self.x
@@ -100,8 +102,9 @@ class GameObject(object):
 
             for obj in self._window._all_game_objects:
                 if obj.collidable is True and not obj == self:
-                    rc = self.CheckCollison(obj)
+                    rc = self._CheckCollison(obj)
                     if rc:
+                        self._collideing_with.append(obj)
                         new_y = self.y
 
                         if self._parent:
@@ -132,7 +135,6 @@ class GameObject(object):
         if self.useGravity:
             scale_y = 1
             scale_x = 1
-            # force_x = math.sqrt(2 * x * self._gravity)
             if y < 0:
                 y = y * -1
                 scale_y = -1
@@ -140,8 +142,8 @@ class GameObject(object):
                 x = x * -1
                 scale_x = -1
 
-            force_y = math.sqrt(2 * y * self._gravity * 100)
-            force_x = math.sqrt(2 * x * self._gravity * 100)
+            force_y = math.sqrt(2 * y * self.gravity * 20)
+            force_x = math.sqrt(2 * x * self.gravity * 20)
             self.Translate(force_x * scale_x, force_y * scale_y)
 
     # This function returns parent of GameObject
@@ -151,10 +153,17 @@ class GameObject(object):
         except AttributeError:
             raise Error(self.name + " Does not have a parent")
 
-    # This function gets gameObject and check collision with it
-    def CheckCollison(self, gameObject):
+    def _CheckCollison(self, gameObject):
         rc = self._rect.colliderect(gameObject._rect)
         return rc
+
+    # This function gets gameObject and check collision with it
+    def CheckCollison(self, gameObject):
+        for obj in self._collideing_with:
+            if obj == gameObject:
+                return True
+
+        return False
 
 # Rectangle class (I think all args are easy to understand)
 class Rectangle(GameObject):

@@ -116,7 +116,7 @@ class GameObject(object):
                         child.Translate(0, y)
                 if self._parent:
                     self._parent._child_ycoll = False
-
+        
             if not self._child_xcoll:
                 self.x = new_x
             if not self._child_ycoll:

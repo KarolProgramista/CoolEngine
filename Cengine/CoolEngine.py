@@ -1,5 +1,5 @@
-from Window import *
-from GameObjects import *
+from Cengine.Window import *
+from Cengine.GameObjects import *
 import pygame
 
 pygame.init()

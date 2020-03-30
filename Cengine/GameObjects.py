@@ -1,5 +1,6 @@
 import pygame
 import threading
+import math
 
 # Basic error
 class Error(Exception):
@@ -15,6 +16,7 @@ class GameObject(object):
         self.height = int(height)
         self.name = str(name)
         self.collidable: bool = False  # Set it if you wont to make collisions with that obj
+        self.useGravity: bool = False  # Set it to true if you want to make your obj fall down
         self.draw_hitboxes: bool = False  # Set it to True if you want to display hitboxes of game object
         self.hitbox_color: tuple = (0, 0, 0)  # Set the color of hitbox
 
@@ -26,11 +28,14 @@ class GameObject(object):
         self._stop = [0, 0]
         self._child_ycoll = False
         self._child_xcoll = False
+        self._gravity = 2
 
         # Setup
         self.Setup()
 
     def _hiden_update(self):
+        if self.useGravity:
+            self.Translate(0, self._gravity)
         self._rect = pygame.Rect(self.x, self.y, self.width, self.height)
         self._draw()
         self._draw_hitboxes()
@@ -113,13 +118,31 @@ class GameObject(object):
                 self.x = new_x
             if not self._child_ycoll:
                 self.y = new_y
-        # else:
-        #     self.x += x
-        #     self.y += y
+        else:
+            self.x += x
+            self.y += y
 
-        #     if self._children:
-        #         for child in self._children:
-        #             child.Translate(x, y)
+            if self._children:
+                for child in self._children:
+                    child.Translate(x, y)
+
+    # This function adds force for object
+    # Only with useGravity True
+    def AddForce(self, x: int, y: int):
+        if self.useGravity:
+            scale_y = 1
+            scale_x = 1
+            # force_x = math.sqrt(2 * x * self._gravity)
+            if y < 0:
+                y = y * -1
+                scale_y = -1
+            if x < 0:
+                x = x * -1
+                scale_x = -1
+
+            force_y = math.sqrt(2 * y * self._gravity * 100)
+            force_x = math.sqrt(2 * x * self._gravity * 100)
+            self.Translate(force_x * scale_x, force_y * scale_y)
 
     # This function returns parent of GameObject
     def GetParent(self):
@@ -186,5 +209,8 @@ class Sprite(GameObject):
             pygame.draw.rect(self._window._window, self.color, self._rect)
         else:
             raise ValueError(f"No color and image in {self.name}")
+
+
+
 
 

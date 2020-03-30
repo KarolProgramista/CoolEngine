@@ -1,4 +1,4 @@
-import CoolEngine
+import Cengine.CoolEngine as CoolEngine
 import time
 
 window = CoolEngine.Window(300, 200)
@@ -27,10 +27,14 @@ class Man(CoolEngine.Cricle):
     def Setup(self):
         self.collidable = True
         self.dir = 1
-        self.diry = 0
+        self.diry = -3
         self.changed = 0
+        self.timer = 0
 
     def Update(self):
+        self.timer += window.second_per_frame()
+        if self.timer >= 1:
+            self.diry = 0
         if CoolEngine.Input(window, CoolEngine.KEY_RIGHT):
             if not self.dir == 1:
                 self.changed = 1
@@ -45,6 +49,9 @@ class Man(CoolEngine.Cricle):
             self.dir = -1
         else:
             self.changed = 0
+
+        if CoolEngine.Input(window, CoolEngine.KEY_UP):
+            self.AddForce(-3, -3)
         self.Translate(self.dir, self.diry)
 
 class Girl(CoolEngine.Triangle):
@@ -79,10 +86,12 @@ class Woman(CoolEngine.Sprite):
 
 m = Man(40, 175, 20, 20, 20, "Orofar", (255, 0, 0))
 # m.draw_hitboxes = True
+m.useGravity = True
 b = Boy(60, 180, 10, 10, "Karol", (255, 0, 0))
-b2 = Wall(100, 180, 10, 10, "Karol2.0", (0, 0, 0))
-b3 = Wall(10, 180, 10, 10, "Karol2.0", (0, 0, 0))
-b4 = Wall(10, 50, 300, 10, "Karol2.0", (0, 0, 0))
+wall1 = Wall(100, 180, 10, 10, "WAll1.0", (0, 0, 0))
+wall2 = Wall(10, 180, 10, 10, "wall2.0", (0, 0, 0))
+wall3 = Wall(10, 50, 300, 10, "wall3.0", (0, 0, 0))
+wall4 = Wall(0, 196, 300, 10, "wall4.0", (0, 0, 0))
 
 g = Girl(30, 90, 10, 10, "Trobums", (255, 0, 0), "up")
 g.draw_hitboxes = True
@@ -93,8 +102,9 @@ window.add_game_object(b)
 window.add_game_object(m)
 window.add_game_object(g)
 window.add_game_object(Woman(100, 90, 0, 0, "Chory", imagePath="bee.png", color=(255, 0, 0)))
-window.add_game_object(b2)
-window.add_game_object(b3)
-window.add_game_object(b4)
+window.add_game_object(wall1)
+window.add_game_object(wall2)
+window.add_game_object(wall3)
+window.add_game_object(wall4)
 
 window.run()

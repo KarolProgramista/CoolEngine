@@ -1,1 +1,4 @@
-
+class alo(lol)
+{
+    if
+}

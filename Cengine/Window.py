@@ -1,5 +1,5 @@
 import pygame
-import GameObjects
+import Cengine.GameObjects as GameObjects
 import threading
 
 pygame.init()

@@ -1,5 +1,6 @@
 import pygame
 import Cengine.GameObjects as GameObjects
+import Cengine.UI2 as UI
 
 pygame.init()
 
@@ -18,6 +19,7 @@ class Window(object):
         # Private variables
         self._window = pygame.display.set_mode((width, height))
         self._all_game_objects = list()
+        self._ui_elements = list()
         self.__bg = (0, 0, 0)
         self.__clock = pygame.time.Clock()
         self.__delta_time = self.__clock.tick(self.fps)
@@ -60,6 +62,10 @@ class Window(object):
         for object in self._all_game_objects:
             object.Update()
             object._hiden_update()
+
+        # Render all UI elements
+        for element in self._ui_elements:
+            element._render()
            
         self.__clock.tick(self.fps)
 
@@ -85,6 +91,15 @@ class Window(object):
             self._all_game_objects.append(Object)
         else:
             raise ValueError("Given arg isn't GameObject")
+    
+    # This function adds new UI element to view
+    # Object might be only Lable or Button
+    def add_ui_element(self, Object):
+        if isinstance(Object, UI._UiElement):
+            Object._window = self
+            self._ui_elements.append(Object)
+        else:
+            raise ValueError("Given Object isn't UI element")
 
     # Destroy object
     def destroy(self, Object: GameObjects.GameObject):

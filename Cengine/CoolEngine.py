@@ -1,5 +1,6 @@
 from Cengine.Window import *
 from Cengine.GameObjects import *
+import Cengine.UI2 as UI
 import pygame
 
 pygame.init()
@@ -65,3 +66,11 @@ def InputUp(window, key):
         if event == key:
             return True
     return False
+
+
+# This function maps one value to another
+def map(x, in_min, in_max, out_min, out_max):
+  try:
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+  except ZeroDivisionError:
+    return 0

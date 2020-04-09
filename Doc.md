@@ -125,6 +125,10 @@ check, Translate and Scaling and more
 
     # This function gets gameObject and check collision with it
     CheckCollison(gameObject: GameObject) -> bool
+
+    # This function do the same as this upper but
+    # this function also handle not colidable objects
+    CheckPosCollision(gameObject: GameObject) -> bool
 ```
 
 ### Inputs
@@ -219,6 +223,52 @@ gravity value.
     KEY_SLASH
     KEY_BACKSLASH
 ```
+
+## Integrated UI2 library
+### Getting started with UI
+UI2 library is simple UI library. Its second version of UI library.  
+UI library was used in some my projects. But it was operating on pygame.
+UI2 library is now in alpha version. Its not published yet. But the version
+for pygame will be published in future. In CoolEngine UI2 is small alpha
+version. When UI2 would be published I will add full support.
+
+### Classes
+UI2 has three classes: ``UI.Image``, ``UI.Button`` and ``UI.Label``
+
+#### Image
+Image class is used for storing image.  
+Params:
+- path -> Its only one param that pass path to image
+
+If you want to pass image to ``UI.Button`` or ``UI.Label``, pass instance of this class
+
+#### Label
+Label is text element with backgroud.  
+Params for label\:
+- x, y -> Coordinates of label
+- width, height -> Size of label
+- color -> Color of background
+- text_color -> Color of text
+- text_size -> Size of text's font
+- text -> Text to show on label
+- image (optional) -> Instance of class ``UI.Image`` with image
+  
+#### Button
+Button is interactive element with background and text.  
+Params for button\:
+- x, y -> Coordinates of label
+- width, height -> Size of label
+- normal_color -> Color of background when no action acqure
+- hover_color -> Color of backgorund when is hover over by mouse
+- text_color -> Color of text
+- text_size -> Size of text's font
+- text -> Text to show on button
+- command (optional) -> Command that is done when button is clicked. Work only with none argument functions
+- image (optional) -> Instance of class ``UI.Image`` with image
+
+---
+---
+
 
 ## Ending
 

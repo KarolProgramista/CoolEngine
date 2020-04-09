@@ -171,6 +171,12 @@ class GameObject(object):
 
         return False
 
+    # Check collions based on position
+    # and not collidable variable
+    def CheckPosCollion(self, gameObject):
+        rc = self._rect.colliderect(gameObject._rect)
+        return rc
+
 # Rectangle class (I think all args are easy to understand)
 class Rectangle(GameObject):
     def __init__(self, x, y, width, height, name, color):

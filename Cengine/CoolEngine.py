@@ -51,6 +51,7 @@ KEY_LSHIFT = pygame.K_LSHIFT
 KEY_RSHIFT = pygame.K_RSHIFT
 KEY_SLASH = pygame.K_SLASH
 KEY_BACKSLASH = pygame.K_BACKSLASH
+KEY_SPACE = pygame.K_SPACE
 
 # This function takes window and key
 # If passed key has been clicked in this window function return True

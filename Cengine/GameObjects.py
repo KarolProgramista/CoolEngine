@@ -88,7 +88,10 @@ class GameObject(object):
                         self._collideing_with.append(obj)
                         if self._parent:
                             self._parent._child_xcoll = True
-                        new_x = self.x
+                        if new_x < obj.x:
+                            new_x = obj.x
+                        else:
+                            new_x = obj.x + obj.width
 
             if not new_x == self.x:
                 if self._children:
@@ -105,7 +108,10 @@ class GameObject(object):
                     rc = self._CheckCollison(obj)
                     if rc:
                         self._collideing_with.append(obj)
-                        new_y = self.y
+                        if self.y < obj.y:
+                            new_y = obj.y - self.height
+                        else:
+                            new_y = obj.y
 
                         if self._parent:
                             self._parent._child_ycoll = True
@@ -200,7 +206,7 @@ class Triangle(GameObject):
 # Sprite class. If imagePath = None (default) color will be used
 class Sprite(GameObject):
     def __init__(self, x, y, width, height, name, color=None, imagePath=None):
-        self.color = tuple(color)
+        self.color = tuple(color) if not color == None else None
         self.imagePath = str(imagePath)
 
         # Private
@@ -211,6 +217,7 @@ class Sprite(GameObject):
 
     def _draw(self):
         if self.imagePath is not None:
+            print(name)
             self._image = pygame.image.load(self.imagePath)
             transformed = pygame.transform.scale(self._image, (self.width, self.height))
             self._window._window.blit(transformed, (self.x, self.y))

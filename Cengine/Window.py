@@ -107,6 +107,12 @@ class Window(object):
             self._all_game_objects.remove(Object)
         else:
             raise ValueError("Given arg isn't GameObject")
+
+    def destroyUI(self, Element):
+        if isinstance(Element, UI._UiElement):
+            self._ui_elements.remove(Element)
+        else:
+            raise ValueError("Given element is not UI element")
     # This function returns how mouch second pass per one frame
     def second_per_frame(self):
         return 1/self.fps

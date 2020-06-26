@@ -100,6 +100,9 @@ develpoment.
 
     # This function runs engine
     run(None) -> None
+
+    # Destroy UI2 element and delete it from list
+    destroyUI(self, Element):
 ```
 
 ### Game Object functions
@@ -255,7 +258,7 @@ Params for label\:
   
 #### Button
 Button is interactive element with background and text.  
-Params for button\:
+Params for button:
 - x, y -> Coordinates of label
 - width, height -> Size of label
 - normal_color -> Color of background when no action acqure
@@ -265,6 +268,20 @@ Params for button\:
 - text -> Text to show on button
 - command (optional) -> Command that is done when button is clicked. Work only with none argument functions
 - image (optional) -> Instance of class ``UI.Image`` with image
+
+
+
+#### Aditional common functions
+There are functions that can be used on either button or label
+``` Python
+# Set active of UI element (Disabled elements ar not displayed)
+.SetActive(state: bool) 
+
+```
+
+#### Common atrributes
+Atrributes that button and label have in common
+- enabled -> current state of UI2 elment (False or True)
 
 ---
 ---

@@ -1,5 +1,6 @@
 import pygame
 import threading
+import Cengine.Window as w
 import math
 
 # Basic error
@@ -19,13 +20,13 @@ class GameObject(object):
         self.useGravity: bool = False  # Set it to true if you want to make your obj fall down
         self.draw_hitboxes: bool = False  # Set it to True if you want to display hitboxes of game object
         self.hitbox_color: tuple = (0, 0, 0)  # Set the color of hitbox
-        self.gravity = 2 # Set it to change gravity force
+        self.gravity: int = 2 # Set it to change gravity force
 
         # Private variables
         self._rect = pygame.Rect(x, y, width, height)
         self._parent = None
         self._children = []
-        self._window = None
+        self._window: w.Window = None
         self._stop = [0, 0]
         self._child_ycoll = False
         self._child_xcoll = False
@@ -77,7 +78,7 @@ class GameObject(object):
         if self.collidable or (self._parent and self._parent.collidable):
             new_x = self.x + x
             new_y = self.y + y
-
+            
             # For x
             self._rect = pygame.Rect(new_x, self.y, self.width, self.height)
 
@@ -168,7 +169,7 @@ class GameObject(object):
         for obj in self._collideing_with:
             if obj == gameObject:
                 return True
-
+                
         return False
 
     # Check collions based on position
@@ -213,7 +214,7 @@ class Triangle(GameObject):
 class Sprite(GameObject):
     def __init__(self, x, y, width, height, name, color=None, imagePath=None):
         self.color = tuple(color) if not color == None else None
-        self.imagePath = str(imagePath)
+        self.imagePath = imagePath
 
         # Private
         if imagePath is not None:
@@ -223,7 +224,6 @@ class Sprite(GameObject):
 
     def _draw(self):
         if self.imagePath is not None:
-            print(name)
             self._image = pygame.image.load(self.imagePath)
             transformed = pygame.transform.scale(self._image, (self.width, self.height))
             self._window._window.blit(transformed, (self.x, self.y))

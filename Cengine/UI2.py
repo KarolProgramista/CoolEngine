@@ -56,7 +56,8 @@ class Button(_UiElement):
                     self._window._window.blit(scaled_image, (self.x, self.y))
                 if mouse_key[0] == 1:
                     time.sleep(0.1)
-                    self.__command()
+                    if self.__command:
+                        self.__command()
 
             else:
                 if self._image == None:

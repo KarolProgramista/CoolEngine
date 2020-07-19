@@ -26,6 +26,7 @@ class Window(object):
         self._events = []
         self._keys = []
         self._events_up = []
+        self.__freezed = False
 
     # This function runs engine
     def run(self):
@@ -55,13 +56,16 @@ class Window(object):
         # Get inputs
         self.__get_inputs()
 
-        # Fill window
-        self._window.fill(self.__bg)
+        if not self.__freezed:
+            # Fill window
+            self._window.fill(self.__bg)
+            
 
-        # Update all objs
-        for object in self._all_game_objects:
-            object.Update()
-            object._hiden_update()
+
+            # Update all objs
+            for object in self._all_game_objects:
+                object.Update()
+                object._hiden_update()
 
         # Render all UI elements
         for element in self._ui_elements:
@@ -104,6 +108,7 @@ class Window(object):
     # Destroy object
     def destroy(self, Object: GameObjects.GameObject):
         if isinstance(Object, GameObjects.GameObject) is True:
+            print("Destroying: ", Object.name)
             self._all_game_objects.remove(Object)
         else:
             raise ValueError("Given arg isn't GameObject")
@@ -116,6 +121,15 @@ class Window(object):
     # This function returns how mouch second pass per one frame
     def second_per_frame(self):
         return 1/self.fps
+
+    def find(self, name):
+        for element in self._all_game_objects:
+            if element.name == name:
+                return element
+
+    # Function freez or unfreez screen. The UI elements are not freezed 
+    def Freez(self, state: bool):
+        self.__freezed = state
 
 
 

@@ -86,13 +86,22 @@ class GameObject(object):
                 if obj.collidable is True and not obj == self:
                     rc = self._CheckCollison(obj)
                     if rc:
-                        self._collideing_with.append(obj)
+                        if not obj in self._collideing_with:
+                            self._collideing_with.append(obj)
+
+                        if not self in obj._collideing_with:
+                            obj._collideing_with.append(self)
                         if self._parent:
                             self._parent._child_xcoll = True
                         if new_x < obj.x:
-                            new_x = obj.x
+                            new_x = obj.x - self.width
                         else:
                             new_x = obj.x + obj.width
+                    else:
+                        if obj in self._collideing_with:
+                            self._collideing_with.remove(obj)
+                        if self in obj._collideing_with:
+                            obj._collideing_with.remove(self)
 
             if not new_x == self.x:
                 if self._children:
@@ -108,14 +117,22 @@ class GameObject(object):
                 if obj.collidable is True and not obj == self:
                     rc = self._CheckCollison(obj)
                     if rc:
-                        self._collideing_with.append(obj)
+                        if not obj in self._collideing_with:
+                            self._collideing_with.append(obj)
+                        if not self in obj._collideing_with:
+                            obj._collideing_with.append(self)
                         if self.y < obj.y:
                             new_y = obj.y - self.height
                         else:
-                            new_y = obj.y
+                            new_y = obj.y + obj.height
 
                         if self._parent:
                             self._parent._child_ycoll = True
+                    else:
+                        if obj in self._collideing_with:
+                            self._collideing_with.remove(obj)
+                        if self in obj._collideing_with:
+                            obj._collideing_with.remove(self)
 
             if not new_y == self.y:
                 if self._children:
@@ -177,6 +194,10 @@ class GameObject(object):
     def CheckPosCollion(self, gameObject):
         rc = self._rect.colliderect(gameObject._rect)
         return rc
+
+    # Get object that you are colliding with
+    def GetCollideingWith(self):
+        return self._collideing_with
 
 # Rectangle class (I think all args are easy to understand)
 class Rectangle(GameObject):
